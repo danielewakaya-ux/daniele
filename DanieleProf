@@ -1,0 +1,163 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class GeradorBNCC extends JFrame {
+
+    private JTextField campoHorario;
+    private JTextField campoDescricao;
+    private JComboBox<String> comboSerie;
+    private JComboBox<String> comboDisciplina;
+    private JTextArea areaResultado;
+
+    public GeradorBNCC() {
+
+        setTitle("Gerador de Atividades BNCC - Ensino Fundamental II");
+        setSize(500, 550);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
+
+        // 🎨 Cor rosa
+        Color rosa = new Color(255, 182, 193);
+        getContentPane().setBackground(rosa);
+
+        // 🖼️ PAINEL DA IMAGEM
+        JPanel painelImagem = new JPanel();
+        painelImagem.setBackground(rosa);
+
+        // Carregar imagem
+        ImageIcon icon = new ImageIcon("professora.png");
+        Image img = icon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+        JLabel labelImagem = new JLabel(new ImageIcon(img));
+
+        painelImagem.add(labelImagem);
+
+        add(painelImagem, BorderLayout.NORTH);
+
+        // 📌 PAINEL DE ENTRADA
+        JPanel painelEntrada = new JPanel();
+        painelEntrada.setLayout(new GridLayout(5, 2, 10, 10));
+        painelEntrada.setBackground(Color.WHITE);
+        painelEntrada.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        painelEntrada.add(new JLabel("Horário da aula:"));
+        campoHorario = new JTextField();
+        painelEntrada.add(campoHorario);
+
+        painelEntrada.add(new JLabel("Série:"));
+        String[] series = {"6º Ano", "7º Ano", "8º Ano", "9º Ano"};
+        comboSerie = new JComboBox<>(series);
+        painelEntrada.add(comboSerie);
+
+        painelEntrada.add(new JLabel("Disciplina:"));
+        String[] disciplinas = {
+                "Português",
+                "Matemática",
+                "História",
+                "Geografia",
+                "Ciências",
+                "Inglês",
+                "Educação Física",
+                "Informática",
+                "Poo Java"
+        };
+        comboDisciplina = new JComboBox<>(disciplinas);
+        painelEntrada.add(comboDisciplina);
+
+        painelEntrada.add(new JLabel("Descrição da disciplina:"));
+        campoDescricao = new JTextField();
+        painelEntrada.add(campoDescricao);
+
+        JButton botaoGerar = new JButton("Gerar Atividade");
+        botaoGerar.setBackground(rosa);
+        botaoGerar.setFocusPainted(false);
+        painelEntrada.add(botaoGerar);
+
+        add(painelEntrada, BorderLayout.CENTER);
+
+        // 📄 RESULTADO
+        areaResultado = new JTextArea();
+        areaResultado.setLineWrap(true);
+        areaResultado.setWrapStyleWord(true);
+        areaResultado.setBackground(new Color(255, 240, 245));
+
+        add(new JScrollPane(areaResultado), BorderLayout.SOUTH);
+
+        botaoGerar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                gerarPlano();
+            }
+        });
+    }
+
+    private void gerarPlano() {
+
+        String horario = campoHorario.getText();
+        String serie = (String) comboSerie.getSelectedItem();
+        String disciplina = (String) comboDisciplina.getSelectedItem();
+        String descricao = campoDescricao.getText();
+
+        String conteudo = "";
+
+        switch (disciplina) {
+
+            case "Português":
+                conteudo = "Leitura e interpretação de textos, gêneros textuais e produção textual.";
+                break;
+
+            case "Matemática":
+                conteudo = "Operações com números inteiros, frações, problemas matemáticos e raciocínio lógico.";
+                break;
+
+            case "História":
+                conteudo = "Civilizações antigas, formação das sociedades e cultura.";
+                break;
+
+            case "Geografia":
+                conteudo = "Espaço geográfico, paisagens naturais e organização do território.";
+                break;
+
+            case "Ciências":
+                conteudo = "Sistema solar, seres vivos, energia e transformações da matéria.";
+                break;
+
+            case "Inglês":
+                conteudo = "Vocabulário básico, leitura e interpretação de textos simples.";
+                break;
+
+            case "Educação Física":
+                conteudo = "Práticas corporais, esportes, jogos e qualidade de vida.";
+                break;
+
+            case "Informática":
+                conteudo = "Noções básicas de tecnologia e ferramentas digitais.";
+                break;
+
+            case "Poo Java":
+                conteudo = "Programação orientada a objetos: classes, objetos e métodos.";
+                break;
+        }
+
+        String plano =
+                "PLANO DE AULA\n\n" +
+                        "Horário: " + horario + "\n" +
+                        "Série: " + serie + "\n" +
+                        "Disciplina: " + disciplina + "\n" +
+                        "Descrição: " + descricao + "\n\n" +
+                        "Conteúdo:\n" + conteudo + "\n\n" +
+                        "Atividade sugerida:\n" +
+                        "1. Explicar o conteúdo.\n" +
+                        "2. Dar exemplos.\n" +
+                        "3. Aplicar exercícios.\n" +
+                        "4. Corrigir com a turma.";
+
+        areaResultado.setText(plano);
+    }
+
+    public static void main(String[] args) {
+
+        SwingUtilities.invokeLater(() -> {
+            new GeradorBNCC().setVisible(true);
+        });
+    }
+}
