@@ -1,163 +1,119 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel de Disciplinas</title>
 
-public class GeradorBNCC extends JFrame {
-
-    private JTextField campoHorario;
-    private JTextField campoDescricao;
-    private JComboBox<String> comboSerie;
-    private JComboBox<String> comboDisciplina;
-    private JTextArea areaResultado;
-
-    public GeradorBNCC() {
-
-        setTitle("Gerador de Atividades BNCC - Ensino Fundamental II");
-        setSize(500, 550);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
-
-        // 🎨 Cor rosa
-        Color rosa = new Color(255, 182, 193);
-        getContentPane().setBackground(rosa);
-
-        // 🖼️ PAINEL DA IMAGEM
-        JPanel painelImagem = new JPanel();
-        painelImagem.setBackground(rosa);
-
-        // Carregar imagem
-        ImageIcon icon = new ImageIcon("professora.png");
-        Image img = icon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
-        JLabel labelImagem = new JLabel(new ImageIcon(img));
-
-        painelImagem.add(labelImagem);
-
-        add(painelImagem, BorderLayout.NORTH);
-
-        // 📌 PAINEL DE ENTRADA
-        JPanel painelEntrada = new JPanel();
-        painelEntrada.setLayout(new GridLayout(5, 2, 10, 10));
-        painelEntrada.setBackground(Color.WHITE);
-        painelEntrada.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        painelEntrada.add(new JLabel("Horário da aula:"));
-        campoHorario = new JTextField();
-        painelEntrada.add(campoHorario);
-
-        painelEntrada.add(new JLabel("Série:"));
-        String[] series = {"6º Ano", "7º Ano", "8º Ano", "9º Ano"};
-        comboSerie = new JComboBox<>(series);
-        painelEntrada.add(comboSerie);
-
-        painelEntrada.add(new JLabel("Disciplina:"));
-        String[] disciplinas = {
-                "Português",
-                "Matemática",
-                "História",
-                "Geografia",
-                "Ciências",
-                "Inglês",
-                "Educação Física",
-                "Informática",
-                "Poo Java"
-        };
-        comboDisciplina = new JComboBox<>(disciplinas);
-        painelEntrada.add(comboDisciplina);
-
-        painelEntrada.add(new JLabel("Descrição da disciplina:"));
-        campoDescricao = new JTextField();
-        painelEntrada.add(campoDescricao);
-
-        JButton botaoGerar = new JButton("Gerar Atividade");
-        botaoGerar.setBackground(rosa);
-        botaoGerar.setFocusPainted(false);
-        painelEntrada.add(botaoGerar);
-
-        add(painelEntrada, BorderLayout.CENTER);
-
-        // 📄 RESULTADO
-        areaResultado = new JTextArea();
-        areaResultado.setLineWrap(true);
-        areaResultado.setWrapStyleWord(true);
-        areaResultado.setBackground(new Color(255, 240, 245));
-
-        add(new JScrollPane(areaResultado), BorderLayout.SOUTH);
-
-        botaoGerar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                gerarPlano();
-            }
-        });
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5edff;
+      margin: 0;
+      text-align: center;
     }
 
-    private void gerarPlano() {
-
-        String horario = campoHorario.getText();
-        String serie = (String) comboSerie.getSelectedItem();
-        String disciplina = (String) comboDisciplina.getSelectedItem();
-        String descricao = campoDescricao.getText();
-
-        String conteudo = "";
-
-        switch (disciplina) {
-
-            case "Português":
-                conteudo = "Leitura e interpretação de textos, gêneros textuais e produção textual.";
-                break;
-
-            case "Matemática":
-                conteudo = "Operações com números inteiros, frações, problemas matemáticos e raciocínio lógico.";
-                break;
-
-            case "História":
-                conteudo = "Civilizações antigas, formação das sociedades e cultura.";
-                break;
-
-            case "Geografia":
-                conteudo = "Espaço geográfico, paisagens naturais e organização do território.";
-                break;
-
-            case "Ciências":
-                conteudo = "Sistema solar, seres vivos, energia e transformações da matéria.";
-                break;
-
-            case "Inglês":
-                conteudo = "Vocabulário básico, leitura e interpretação de textos simples.";
-                break;
-
-            case "Educação Física":
-                conteudo = "Práticas corporais, esportes, jogos e qualidade de vida.";
-                break;
-
-            case "Informática":
-                conteudo = "Noções básicas de tecnologia e ferramentas digitais.";
-                break;
-
-            case "Poo Java":
-                conteudo = "Programação orientada a objetos: classes, objetos e métodos.";
-                break;
-        }
-
-        String plano =
-                "PLANO DE AULA\n\n" +
-                        "Horário: " + horario + "\n" +
-                        "Série: " + serie + "\n" +
-                        "Disciplina: " + disciplina + "\n" +
-                        "Descrição: " + descricao + "\n\n" +
-                        "Conteúdo:\n" + conteudo + "\n\n" +
-                        "Atividade sugerida:\n" +
-                        "1. Explicar o conteúdo.\n" +
-                        "2. Dar exemplos.\n" +
-                        "3. Aplicar exercícios.\n" +
-                        "4. Corrigir com a turma.";
-
-        areaResultado.setText(plano);
+    header {
+      background: #9333ea;
+      color: white;
+      padding: 20px;
+      font-size: 26px;
+      font-weight: bold;
     }
 
-    public static void main(String[] args) {
-
-        SwingUtilities.invokeLater(() -> {
-            new GeradorBNCC().setVisible(true);
-        });
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+      padding: 20px;
     }
-}
+
+    button {
+      padding: 15px;
+      border: none;
+      border-radius: 12px;
+      background: #e9d5ff;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    button:hover {
+      background: #9333ea;
+      color: white;
+      transform: scale(1.05);
+    }
+
+    .area {
+      margin: 20px;
+      padding: 20px;
+      background: white;
+      border-radius: 12px;
+      border: 2px solid #d8b4fe;
+    }
+
+    textarea {
+      width: 90%;
+      height: 150px;
+      margin-top: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      font-size: 14px;
+      resize: none;
+    }
+
+    .salvar {
+      margin-top: 10px;
+      background: #9333ea;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+<header>📚 Meu Painel de Estudos</header>
+
+<div class="container">
+  <button onclick="abrir('matematica')">Matemática</button>
+  <button onclick="abrir('portugues')">Português</button>
+  <button onclick="abrir('historia')">História</button>
+  <button onclick="abrir('geografia')">Geografia</button>
+  <button onclick="abrir('ciencias')">Ciências</button>
+  <button onclick="abrir('poo')">POO / Java</button>
+  <button onclick="abrir('arquitetura')">Arquitetura e Manutenção</button>
+  <button onclick="abrir('web')">Programação Web</button>
+</div>
+
+<div class="area">
+  <h2 id="titulo">Selecione uma matéria</h2>
+  <textarea id="texto" placeholder="Escreva aqui suas anotações..."></textarea><br>
+  <button class="salvar" onclick="salvar()">Salvar</button>
+</div>
+
+<script>
+  let materiaAtual = '';
+
+  function abrir(materia) {
+    materiaAtual = materia;
+    document.getElementById('titulo').innerText = materia.toUpperCase();
+
+    const conteudoSalvo = localStorage.getItem(materia);
+    document.getElementById('texto').value = conteudoSalvo || '';
+  }
+
+  function salvar() {
+    if (!materiaAtual) {
+      alert('Escolha uma matéria primeiro!');
+      return;
+    }
+
+    const texto = document.getElementById('texto').value;
+    localStorage.setItem(materiaAtual, texto);
+    alert('Conteúdo salvo!');
+  }
+</script>
+
+</body>
+</html>
