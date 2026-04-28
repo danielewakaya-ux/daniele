@@ -1,76 +1,111 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Painel de Disciplinas</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel de Disciplinas</title>
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5edff;
-      margin: 0;
-      text-align: center;
-    }
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f5edff;
+  margin: 0;
+  text-align: center;
+  overflow-x: hidden;
+}
 
-    header {
-      background: #9333ea;
-      color: white;
-      padding: 20px;
-      font-size: 26px;
-      font-weight: bold;
-    }
+/* HEADER */
+header {
+  background: #9333ea;
+  color: white;
+  padding: 20px;
+  font-size: 26px;
+  font-weight: bold;
+}
 
-    .container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 15px;
-      padding: 20px;
-    }
+/* BOTÕES */
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+  padding: 20px;
+}
 
-    button {
-      padding: 15px;
-      border: none;
-      border-radius: 12px;
-      background: #e9d5ff;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.3s;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
+button {
+  padding: 15px;
+  border: none;
+  border-radius: 12px;
+  background: #e9d5ff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
 
-    button:hover {
-      background: #9333ea;
-      color: white;
-      transform: scale(1.05);
-    }
+button:hover {
+  background: #9333ea;
+  color: white;
+  transform: scale(1.05);
+}
 
-    .area {
-      margin: 20px;
-      padding: 20px;
-      background: white;
-      border-radius: 12px;
-      border: 2px solid #d8b4fe;
-    }
+/* ÁREA TEXTO */
+.area {
+  margin: 20px;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  border: 2px solid #d8b4fe;
+}
 
-    textarea {
-      width: 90%;
-      height: 150px;
-      margin-top: 10px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      padding: 10px;
-      font-size: 14px;
-      resize: none;
-    }
+textarea {
+  width: 90%;
+  height: 150px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  font-size: 14px;
+  resize: none;
+}
 
-    .salvar {
-      margin-top: 10px;
-      background: #9333ea;
-      color: white;
-    }
-  </style>
+.salvar {
+  margin-top: 10px;
+  background: #9333ea;
+  color: white;
+}
+
+/* IFRAME */
+iframe {
+  width: 90%;
+  height: 400px;
+  border: none;
+  margin-top: 20px;
+  border-radius: 10px;
+}
+
+/* CORAÇÕES */
+.heart {
+  position: fixed;
+  top: -10px;
+  font-size: 20px;
+  animation: cair 5s linear infinite;
+  color: #ff4d6d;
+}
+
+@keyframes cair {
+  0% {
+    transform: translateY(0) rotate(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+</style>
 </head>
+
 <body>
 
 <header>📚 Meu Painel de Estudos</header>
@@ -82,37 +117,76 @@
   <button onclick="abrir('geografia')">Geografia</button>
   <button onclick="abrir('ciencias')">Ciências</button>
   <button onclick="abrir('poo')">POO / Java</button>
-  <button onclick="abrir('arquitetura')">Arquitetura e Manutenção</button>
+  <button onclick="abrir('arquitetura')">Arquitetura</button>
   <button onclick="abrir('web')">Programação Web</button>
+</div>
+
+<!-- BOTÕES NOVOS -->
+<div>
+  <button onclick="abrirSite()">📖 Abrir Livro (nova aba)</button>
+  <button onclick="mostrarSite()">👀 Ver aqui na página</button>
 </div>
 
 <div class="area">
   <h2 id="titulo">Selecione uma matéria</h2>
   <textarea id="texto" placeholder="Escreva aqui suas anotações..."></textarea><br>
   <button class="salvar" onclick="salvar()">Salvar</button>
+
+  <!-- IFRAME -->
+  <iframe id="frameSite" style="display:none;"></iframe>
 </div>
 
 <script>
-  let materiaAtual = '';
+let materiaAtual = '';
 
-  function abrir(materia) {
-    materiaAtual = materia;
-    document.getElementById('titulo').innerText = materia.toUpperCase();
+function abrir(materia) {
+  materiaAtual = materia;
+  document.getElementById('titulo').innerText = materia.toUpperCase();
 
-    const conteudoSalvo = localStorage.getItem(materia);
-    document.getElementById('texto').value = conteudoSalvo || '';
+  const conteudoSalvo = localStorage.getItem(materia);
+  document.getElementById('texto').value = conteudoSalvo || '';
+}
+
+function salvar() {
+  if (!materiaAtual) {
+    alert('Escolha uma matéria primeiro!');
+    return;
   }
 
-  function salvar() {
-    if (!materiaAtual) {
-      alert('Escolha uma matéria primeiro!');
-      return;
-    }
+  const texto = document.getElementById('texto').value;
+  localStorage.setItem(materiaAtual, texto);
+  alert('Conteúdo salvo!');
+}
 
-    const texto = document.getElementById('texto').value;
-    localStorage.setItem(materiaAtual, texto);
-    alert('Conteúdo salvo!');
-  }
+/* ABRIR EM NOVA ABA */
+function abrirSite() {
+  window.open("https://www.edocente.com.br/pnld/obra/jovem-sapiens-historia-9o-ano-pnld-2024-objeto-1-anos-finais-ensino-fundamental/", "_blank");
+}
+
+/* MOSTRAR NO IFRAME */
+function mostrarSite() {
+  const frame = document.getElementById("frameSite");
+  frame.style.display = "block";
+  frame.src = "https://www.edocente.com.br/pnld/obra/jovem-sapiens-historia-9o-ano-pnld-2024-objeto-1-anos-finais-ensino-fundamental/";
+}
+
+/* CORAÇÕES CAINDO */
+function criarCoracao() {
+  const heart = document.createElement("div");
+  heart.classList.add("heart");
+  heart.innerHTML = "💜";
+
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.animationDuration = (3 + Math.random() * 3) + "s";
+
+  document.body.appendChild(heart);
+
+  setTimeout(() => {
+    heart.remove();
+  }, 5000);
+}
+
+setInterval(criarCoracao, 300);
 </script>
 
 </body>
